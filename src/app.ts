@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
-import { usuarioRouter } from './UsuarioBag/usuario.routes.js';
-import { mascotaRouter } from './MascotasBag/mascota.routes.js';
+import { usuarioRouter } from './Usuario/usuario.routes.js';
+import { mascotaRouter } from './Mascota/mascota.routes.js';
 import { veterinariaRouter } from './Veterinaria/veterinaria.routes.js';
-//import { horarioRouter } from './Horario/horario.routes.js';
-import { antecedenteRouter } from './AntecedentesBag/antecedente.routes.js';
+import { horarioRouter } from './Horario/horario.routes.js';
+import { antecedenteRouter } from './Antecedente/antecedente.routes.js';
 import { ORM, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
 
@@ -18,7 +18,7 @@ app.use((req, res, next) => RequestContext.create(ORM.em, next));
 app.use('/api/usuarios', usuarioRouter);
 app.use('/api/mascota', mascotaRouter);
 app.use('/api/veterinaria', veterinariaRouter);
-//app.use('/api/horarios', horarioRouter)
+app.use('/api/horarios', horarioRouter);
 app.use('/api/antecedentes', antecedenteRouter);
 
 app.use((_, res) => {
