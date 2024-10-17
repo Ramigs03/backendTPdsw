@@ -7,6 +7,7 @@ import { horarioRouter } from './Horario/horario.routes.js';
 import { antecedenteRouter } from './Antecedente/antecedente.routes.js';
 import { ORM, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
+import { tipoRouter } from './Tipo/tipo.routes.js';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use('/api/mascota', mascotaRouter);
 app.use('/api/veterinaria', veterinariaRouter);
 app.use('/api/horarios', horarioRouter);
 app.use('/api/antecedentes', antecedenteRouter);
+app.use('/api/tipo', tipoRouter);
 
 app.use((_, res) => {
   return res.status(404).send({ message: 'Resource not found' });

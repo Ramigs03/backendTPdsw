@@ -1,16 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import { Mascota } from './mascota.entity.js';
 import { ORM } from '../shared/db/orm.js';
+import { Tipo } from './tipo.entity.js';
 
 const em = ORM.em;
 
-function sanitizeMascotaInput(req: Request, res: Response, next: NextFunction) {
+function sanitizeTipoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
-    idMascota: req.body.idMascota,
+    id: req.body.id,
     nombre: req.body.nombre,
-    fechaNac: req.body.fechaNac,
+    descripcion: req.body.descripcion,
   };
 
+  // Eliminar propiedades indefinidas
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {
       delete req.body.sanitizedInput[key];
@@ -22,8 +23,8 @@ function sanitizeMascotaInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const mascotas = await em.find(Mascota, {});
-    res.status(200).json({ message: 'found all mascotas', data: mascotas });
+    const tipos = await em.find(Tipo, {}, { populate: ['especies'] }); // Incluimos las especies relacionadas
+    res.status(200).json({ message: 'found all tipos', data: tipos });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -32,8 +33,12 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const mascota = await em.findOneOrFail(Mascota, { id });
-    res.status(200).json({ message: 'found mascota', data: mascota });
+    const tipo = await em.findOneOrFail(
+      Tipo,
+      { id },
+      { populate: ['especies'] }
+    ); // Incluimos las especies relacionadas
+    res.status(200).json({ message: 'found tipo', data: tipo });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -41,9 +46,9 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const mascota = em.create(Mascota, req.body);
+    const tipo = em.create(Tipo, req.body.sanitizedInput);
     await em.flush();
-    res.status(201).json({ message: 'mascota created', data: mascota });
+    res.status(201).json({ message: 'tipo created', data: tipo });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -52,10 +57,10 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const mascota = em.getReference(Mascota, id);
-    em.assign(mascota, req.body);
+    const tipoToUpdate = await em.findOneOrFail(Tipo, { id });
+    em.assign(tipoToUpdate, req.body.sanitizedInput);
     await em.flush();
-    res.status(200).json({ message: 'mascota updated' });
+    res.status(200).json({ message: 'tipo updated', data: tipoToUpdate });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
@@ -64,12 +69,12 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const mascota = em.getReference(Mascota, id);
-    await em.removeAndFlush(mascota);
-    res.status(200).send({ message: 'mascota deleted' });
+    const tipo = em.getReference(Tipo, id);
+    await em.removeAndFlush(tipo);
+    res.status(200).json({ message: 'tipo deleted' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
-export { sanitizeMascotaInput, findAll, findOne, add, update, remove };
+export { sanitizeTipoInput, findAll, findOne, add, update, remove };

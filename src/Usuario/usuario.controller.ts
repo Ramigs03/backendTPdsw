@@ -27,7 +27,7 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const usuarios = await em.find(Usuario, {});
+    const usuarios = await em.find(Usuario, {}, { populate: ['mascotas'] }); // Incluimos las mascotas relacionadas
     res.status(200).json({ message: 'found all usuarios', data: usuarios });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -37,7 +37,11 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const usuario = await em.findOneOrFail(Usuario, { id });
+    const usuario = await em.findOneOrFail(
+      Usuario,
+      { id },
+      { populate: ['mascotas'] }
+    ); // Incluimos las mascotas relacionadas
     res.status(200).json({ message: 'found usuario', data: usuario });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -71,6 +75,7 @@ async function remove(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
     const usuario = em.getReference(Usuario, id);
     await em.removeAndFlush(usuario);
+    res.status(200).json({ message: 'usuario deleted' });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

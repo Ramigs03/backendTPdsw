@@ -1,10 +1,17 @@
-import { Router } from "express";
-import { sanitizeMascotaInput, findAll, findOne, add, update, remove } from "./mascota.controler.js";
+import { Router } from 'express';
+import {
+  sanitizeMascotaInput,
+  findAll,
+  findOne,
+  add,
+  update,
+  remove,
+} from './mascota.controller.js';
 
-export const mascotaRouter= Router()
-mascotaRouter.get('/', findAll)
-mascotaRouter.get('/:idMascota', findOne)
-mascotaRouter.post('/',sanitizeMascotaInput, add)
-mascotaRouter.put('/:idMascota',sanitizeMascotaInput, update)
-mascotaRouter.patch('/:idMascota',sanitizeMascotaInput, update)
-mascotaRouter.delete('/:idMascota',sanitizeMascotaInput, remove)
+export const mascotaRouter = Router();
+
+mascotaRouter.get('/', findAll); // Obtener todas las mascotas
+mascotaRouter.get('/:id', findOne); // Obtener una mascota por ID
+mascotaRouter.post('/', sanitizeMascotaInput, add); // Crear una mascota
+mascotaRouter.put('/:id', sanitizeMascotaInput, update); // Actualizar una mascota por ID
+mascotaRouter.delete('/:id', remove); // Eliminar una mascota por ID
