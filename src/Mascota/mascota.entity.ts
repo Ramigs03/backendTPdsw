@@ -12,6 +12,6 @@ export class Mascota {
   @Property()
   fechaNacimiento!: string;
 
-  @ManyToOne(() => Usuario) // Relación de muchos a uno con Usuario
-  usuario!: Usuario;
+  //@ManyToOne(() => Usuario) // Relación de muchos a uno con Usuario
+  //usuario!: Usuario;
 }

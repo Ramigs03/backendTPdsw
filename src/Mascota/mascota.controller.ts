@@ -25,7 +25,7 @@ function sanitizeMascotaInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const mascotas = await em.find(Mascota, {}, { populate: ['usuario'] }); // Incluye el usuario relacionado
+    const mascotas = await em.find(Mascota, {});
     res.status(200).json({ message: 'found all mascotas', data: mascotas });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -35,11 +35,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const mascota = await em.findOneOrFail(
-      Mascota,
-      { id },
-      { populate: ['usuario'] }
-    ); // Incluye el usuario relacionado
+    const mascota = await em.findOneOrFail(Mascota, { id });
     res.status(200).json({ message: 'found mascota', data: mascota });
   } catch (error: any) {
     res.status(500).json({ message: error.message });

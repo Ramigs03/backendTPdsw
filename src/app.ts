@@ -8,19 +8,21 @@ import { antecedenteRouter } from './Antecedente/antecedente.routes.js';
 import { ORM, syncSchema } from './shared/db/orm.js';
 import { RequestContext } from '@mikro-orm/core';
 import { tipoRouter } from './Tipo/tipo.routes.js';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 //luego de los middlewares base
 app.use((req, res, next) => RequestContext.create(ORM.em, next));
 //antes de las rutas y middlewares de negocio
 
-app.use('/api/usuarios', usuarioRouter);
+app.use('/api/usuario', usuarioRouter);
 app.use('/api/mascota', mascotaRouter);
 app.use('/api/veterinaria', veterinariaRouter);
 app.use('/api/horarios', horarioRouter);
-app.use('/api/antecedentes', antecedenteRouter);
+app.use('/api/antecedente', antecedenteRouter);
 app.use('/api/tipo', tipoRouter);
 
 app.use((_, res) => {

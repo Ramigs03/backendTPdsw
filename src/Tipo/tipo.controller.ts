@@ -23,7 +23,7 @@ function sanitizeTipoInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const tipos = await em.find(Tipo, {}, { populate: ['especies'] }); // Incluimos las especies relacionadas
+    const tipos = await em.find(Tipo, {});
     res.status(200).json({ message: 'found all tipos', data: tipos });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -33,11 +33,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const tipo = await em.findOneOrFail(
-      Tipo,
-      { id },
-      { populate: ['especies'] }
-    ); // Incluimos las especies relacionadas
+    const tipo = await em.findOneOrFail(Tipo, { id });
     res.status(200).json({ message: 'found tipo', data: tipo });
   } catch (error: any) {
     res.status(500).json({ message: error.message });

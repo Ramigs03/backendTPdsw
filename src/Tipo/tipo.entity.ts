@@ -19,6 +19,6 @@ export class Tipo {
   descripcion!: string;
 
   // Relación de uno a muchos con Especie
-  @OneToMany(() => Especie, (especie) => especie.tipo)
-  especies = new Collection<Especie>(this); // Usamos Collection para representar la lista de especies
+  //@OneToMany(() => Especie, (especie) => especie.tipo)
+  //especies = new Collection<Especie>(this); // Usamos Collection para representar la lista de especies
 }

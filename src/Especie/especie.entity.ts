@@ -12,6 +12,6 @@ export class Especie {
   @Property()
   descripcion!: string;
 
-  @ManyToOne(() => Tipo) // Relación de muchos a uno con Tipo
-  tipo!: Tipo;
+  //@ManyToOne(() => Tipo) // Relación de muchos a uno con Tipo
+  //tipo!: Tipo;
 }

@@ -29,6 +29,6 @@ export class Usuario {
   @Property()
   contraseniaUser!: string;
 
-  @OneToMany(() => Mascota, (mascota) => mascota.usuario)
-  mascotas = new Collection<Mascota>(this);
+  //@OneToMany(() => Mascota, (mascota) => mascota.usuario)
+  //mascotas = new Collection<Mascota>(this);
 }
